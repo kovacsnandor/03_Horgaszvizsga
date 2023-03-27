@@ -5,7 +5,16 @@
 
     <div class="row m-0">
       <!-- kereső -->
-      <div class="col-md-12 my-border">kereső</div>
+      <div class="col-md-12 my-border d-flex p-2">
+        <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            v-model="keresoszo"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+      </div>
 
       <!-- kártyák -->
       <div class="col-md-12 my-border">
@@ -21,7 +30,7 @@
                 alt="..."
               />
               <div class="card-body">
-                <h5 class="card-title">{{ hal.FejezetCim }}</h5>
+                <h5 class="card-title" v-html="keresJelol(hal.FejezetCim)"></h5>
                 <button
                   type="button"
                   class="btn btn-primary"
@@ -49,8 +58,8 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-              {{ halKartya.FejezetCim }}
+            <h1 class="modal-title fs-5" id="exampleModalLabel" v-html="keresJelol(halKartya.FejezetCim)">
+             
             </h1>
             <button
               type="button"
@@ -89,7 +98,7 @@
                 alt="..."
               />
 
-            <div>{{halKartya.SzovegHtml}}</div>  
+            <div v-html="keresJelol(halKartya.SzovegHtml)"></div>  
 
           </div>
           <div class="modal-footer">
@@ -130,12 +139,23 @@ export default {
     return {
       halak: [],
       urlHalkartyak: "http://localhost:3000/halkartyak",
+      urlHalkartyakSzur: "http://localhost:3000/halkartyakSzur",
       FejezetId: null,
       halKartya: new HalKartya(),
+      keresoszo: null,
     };
   },
   mounted() {
     this.getHalkartyak();
+  },
+  watch: {
+    keresoszo(){
+      if (this.keresoszo.trim()) {
+        this.getHalkartyakSzur();
+      } else {
+        this.getHalkartyak();
+      }
+    }
   },
   methods: {
     async getHalkartyak() {
@@ -153,6 +173,27 @@ export default {
       this.FejezetId = FejezetId;
       this.getHalkartya();
     },
+    async getHalkartyakSzur() {
+      const urlHalkartya = `${this.urlHalkartyakSzur}/${this.keresoszo}`;
+      const response = await fetch(urlHalkartya);
+      const data = await response.json();
+      this.halak = data.data;
+    },
+    keresJelol(text) {
+      if (this.keresoszo) {
+        let what = new RegExp(this.keresoszo, "gi");
+        if (text) {
+          text = text.replace(what, (match) => {
+            return `<span class="mark">${match}</span>`;
+          });
+        }
+        return text;
+      } else {
+        return text;
+      }
+    },
+
+
   },
 };
 </script>
