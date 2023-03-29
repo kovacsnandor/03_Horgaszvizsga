@@ -673,6 +673,58 @@ ORDER BY FejezetCim
 });
 
 
+app.get("/halkonyv", (req, res) => {
+  let sql = `
+  SELECT 
+        FejezetId, FejezetSzint, FejezetSzam, 
+        FejezetCim, KepFile, Meret, 
+        Suly, TilalmiIdoszak, MeretKorlat, 
+        DarabKorlatos, Foghatosag, SzovegHtml FROM tartalom
+  WHERE FejezetId > 1
+  ORDER BY FejezetId;
+  `;
+
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+
+    connection.query(sql, function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+
+    connection.release();
+  });
+});
+
+app.get("/halkonyvSzur/:keres", (req, res) => {
+  const keres = `%${req.params.keres}%`;
+  let sql = `
+  SELECT 
+  FejezetId, FejezetSzint, FejezetSzam, 
+  FejezetCim, KepFile, Meret, 
+  Suly, TilalmiIdoszak, MeretKorlat, 
+  DarabKorlatos, Foghatosag, SzovegHtml FROM tartalom
+WHERE FejezetId > 1 and (FejezetCim like ? or SzovegHtml like ?)
+ORDER BY FejezetId;
+`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [keres, keres], function (error, results, fields) {
+      sendingGetById(res, error, results, keres);
+    });
+    connection.release();
+  });
+});
+
+
+
 //#endregion hal
 
 function mySanitizeHtml(data) {

@@ -185,3 +185,8 @@ get http://localhost:3000/halkartyak/44
 ### get halkartyak
 get http://localhost:3000/halkartyakSzur/keszeg
 
+### halkönyv
+get http://localhost:3000/halkonyv
+
+### halkönyv szűr
+get http://localhost:3000/halkonyvSzur/ponty
