@@ -656,7 +656,7 @@ app.get("/halkartyakSzur/:keres", (req, res) => {
   Suly, TilalmiIdoszak, MeretKorlat, 
   DarabKorlatos, Foghatosag, SzovegHtml
 FROM tartalom
-WHERE FejezetCim like ? or SzovegHtml like ?
+WHERE (FejezetCim like ? or SzovegHtml like ?) and KepFile IS NOT NULL
 ORDER BY FejezetCim
   `;
 
