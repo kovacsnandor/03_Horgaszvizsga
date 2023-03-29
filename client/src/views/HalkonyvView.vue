@@ -15,8 +15,9 @@
             :data-bs-target="`#flush-collapse${index}`"
             aria-expanded="false"
             :aria-controls="`flush-collapse${index}`"
+            
           >
-            Accordion Item #1
+            <h2 v-html="`${hal.FejezetSzam}.  ${keresJelol(hal.FejezetCim)}`"></h2>
           </button>
         </h2>
         <div
@@ -25,11 +26,43 @@
           :aria-labelledby="`flush-heading${index}`"
           data-bs-parent="#accordionFlushExample"
         >
+
           <div class="accordion-body">
-            Placeholder content for this accordion, which is intended to
-            demonstrate the <code>.accordion-flush</code> class. This is the
-            first item's accordion body.
+
+            <table class="table table-success" v-if="hal.KepFile">
+              <thead>
+                <tr>
+                  <th>Méret</th>
+                  <th>Súly</th>
+                  <th>Tilalmi időszak</th>
+                  <th>Méret korlát</th>
+                  <th>Darab korlátos</th>
+                  <th>Foghatóság</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ hal.Meret }}</td>
+                  <td>{{ hal.Suly }}</td>
+                  <td>{{ hal.TilalmiIdoszak }}</td>
+                  <td>{{ hal.MeretKorlat }}</td>
+                  <td>{{ hal.DarabKorlatos }}</td>
+                  <td>{{ hal.Foghatosag }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <img
+              v-if="hal.KepFile"
+              :src="`/public/kepek/${hal.KepFile}`"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-text" v-html="keresJelol(hal.SzovegHtml)"></div>
+
+
           </div>
+
         </div>
       </div>
       
@@ -69,17 +102,6 @@ export default {
       const response = await fetch(this.urlHalkartyak);
       const data = await response.json();
       this.halak = data.data;
-    },
-    async getHalkartya() {
-      const urlHalkartya = `${this.urlHalkartyak}/${this.FejezetId}`;
-      const response = await fetch(urlHalkartya);
-      const data = await response.json();
-      this.halKartya = data.data[0];
-      console.log(urlHalkartya, this.halKartya);
-    },
-    onClickReszletek(FejezetId) {
-      this.FejezetId = FejezetId;
-      this.getHalkartya();
     },
     async getHalkartyakSzur() {
       const urlHalkartya = `${this.urlHalkartyakSzur}/${this.keresoszo}`;
