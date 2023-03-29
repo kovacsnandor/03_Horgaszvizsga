@@ -54,6 +54,7 @@
             type="search"
             placeholder="Search"
             aria-label="Search"
+            v-model="storeKeres.keresoszo"
           />
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
@@ -62,8 +63,9 @@
   </nav>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { useKeresStore } from "@/stores/keres";
+const storeKeres = useKeresStore();
 </script>
 
 <style>

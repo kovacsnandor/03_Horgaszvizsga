@@ -4,17 +4,6 @@
     <h1>Halkártyák</h1>
 
     <div class="row m-0">
-      <!-- kereső -->
-      <div class="col-md-12 my-border d-flex p-2">
-        <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            v-model="keresoszo"
-          />
-          <button class="btn btn-outline-success" type="submit">Search</button>
-      </div>
 
       <!-- kártyák -->
       <div class="col-md-12 my-border">
@@ -134,6 +123,11 @@ class HalKartya {
   }
 }
 
+import { storeToRefs } from "pinia";
+import { useKeresStore } from "@/stores/keres";
+const storeKeres = useKeresStore();
+const { keresoszo } = storeToRefs(storeKeres);
+
 export default {
   data() {
     return {
@@ -142,7 +136,7 @@ export default {
       urlHalkartyakSzur: "http://localhost:3000/halkartyakSzur",
       FejezetId: null,
       halKartya: new HalKartya(),
-      keresoszo: null,
+      keresoszo,
     };
   },
   mounted() {
