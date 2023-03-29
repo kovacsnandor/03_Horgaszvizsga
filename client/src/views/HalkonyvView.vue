@@ -81,7 +81,6 @@ export default {
       halak: [],
       urlHalkartyak: "http://localhost:3000/halkonyv",
       urlHalkartyakSzur: "http://localhost:3000/halkonyvSzur",
-      FejezetId: null,
       keresoszo,
     };
   },
