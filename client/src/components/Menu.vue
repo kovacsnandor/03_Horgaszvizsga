@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-md w3-theme-l3">
+  <nav class="navbar navbar-expand-md w3-theme-l3 sticky-top">
     <div class="container-fluid">
       <RouterLink class="navbar-brand" to="/">Navbar</RouterLink>
       <button
